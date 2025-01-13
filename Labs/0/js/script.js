@@ -68,7 +68,7 @@ class GameField {
             let colour = rbaTemplate;
             for(let j = 1; j <= 3; j++){
                 //Ensures the colours are different enough to be distinguishable
-                const randVal = (Math.floor(Math.random() * 200) + 20) + (i * 6);
+                const randVal = (Math.floor(Math.random() * 185) + 20) + (i * 10);
                 colour = colour.replace(`%${j}`, randVal.toString());
             }
             colours[i] = colour;       
@@ -103,7 +103,7 @@ class GameField {
     makeButtonsClickable(game){
         this.buttons.forEach((button)=>{
             const btnElement = button.getBtnElement();
-            btnElement.addEventListener("click", () => {
+            btnElement.addEventListener(clickEvent, () => {
                 button.show();
                 const num = parseInt(btnElement.firstChild.innerHTML);
                 game.checkOrder(num);
@@ -168,7 +168,7 @@ class Menu {
             const input = this.#getUserInput();
             if(input > 0){
                 game.startGame(input);
-                this.menuBtn.removeAttribute("onclick");
+                this.menuBtn.removeAttribute(clickAttribute);
             }
         }
 
