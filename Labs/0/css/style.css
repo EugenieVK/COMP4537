@@ -1,0 +1,32 @@
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 85vh;
+    overflow-y: hidden;
+}
+
+#menu {
+    text-align: center;
+}
+
+#userInput {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.gameBtn {
+    width: 10em;
+    height: 5em;
+    transition:all 0.5s linear;
+}
+
+#gameField {
+    display:block;
+    margin: auto;
+    position: relative;
+    margin-top: 6em;
+    width: 65%;
+    height: 100%;
+}
