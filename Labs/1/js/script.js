@@ -117,10 +117,13 @@ class Writer {
 
     getNotes(){
         const jsonNotes = JSON.parse(window.localStorage.getItem(keyString));
-        jsonNotes.forEach((note)=>{
-            const newNote = this.createNote(note.text);
-            this.notes.push(newNote);
-        });
+        if(jsonNotes != null){
+            jsonNotes.forEach((note)=>{
+                const newNote = this.createNote(note.text);
+                this.notes.push(newNote);
+            });
+        }
+        
     }
 
     createNote(text = ""){
@@ -197,9 +200,11 @@ class Reader {
     getNotes(){
         this.notes = [];
         const jsonNotes = JSON.parse(window.localStorage.getItem(keyString));
-        jsonNotes.forEach((note)=>{
-            this.notes.push(new Note(note.text));
-        });
+        if(jsonNotes != null){
+            jsonNotes.forEach((note)=>{
+                this.notes.push(new Note(note.text));
+            });
+        }
     }
 
     updateMessage(){
