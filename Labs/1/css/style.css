@@ -1,0 +1,72 @@
+#container {
+    width:100vw;
+    height:100vh;
+}
+
+h1 {
+    text-align: center;
+}
+
+#notes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width:60%;
+    border: 5px solid rgb(56, 56, 56);
+    border-radius: 10px;
+    padding: 15px;
+    margin:auto;
+}
+
+#buttonsDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 15px;
+}
+
+.noteContainer{
+    display:flex;
+    width:80%;
+    margin-right:auto;
+    margin-left:auto;
+    margin-bottom: 15px;
+    justify-content: space-evenly;
+}
+
+button {
+    background-color: lightgreen;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align:center;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 5px;
+}
+
+.removeBtn {
+    background-color: orange;
+    height: 3em;
+    margin:auto;
+
+}
+
+.backBtn {
+    background-color: lightgray;
+}
+
+textarea {
+    width:60%;
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    height: 6em;
+    font-size:16px;
+    resize:none;
+    background-color: slateblue;
+    color:white;
+}
+
+p {
+    text-align: right;
+}
