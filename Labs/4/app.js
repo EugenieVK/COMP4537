@@ -140,16 +140,18 @@ class DictionaryServer {
 
     startServer() {
         http.createServer((req, res) => {
-            
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            res.setHeader('Access-Control-Allow-Headers' ,'GET, POST');
+            res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
             if(req.method === "OPTIONS"){
                 res.writeHead(204);
                 res.end();
             }
 
+                        
+            res.setHeader('Content-Type', 'application/json');
             const path = url.parse(req.url).pathname;
             if(path === "/api/definitions" || path === "/api/definitions/"){
                 this.requestCount++;
