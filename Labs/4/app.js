@@ -148,16 +148,17 @@ class DictionaryServer {
             if(req.method === "OPTIONS"){
                 res.writeHead(204);
                 res.end();
+                return;
             }
 
-                        
+            this.requestCount++;     
             res.setHeader('Content-Type', 'application/json');
             const path = url.parse(req.url).pathname;
             if(path === "/api/definitions" || path === "/api/definitions/"){
-                this.requestCount++;
+
                 this.handleRequest(req, res);
             } else {
-                this.requestCount++;
+
                 const serverRes = JSON.stringify({
                     "message": messages.messages.PageNotFound,
                     "requestNumber": this.requestCount
