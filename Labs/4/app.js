@@ -38,15 +38,12 @@ class DictionaryServer {
     }
 
     getDate() {
-        return new Date().toISOString().split('T')[0]
+        const date = new Date().toDateString().split(" ");
+        return `${date[1]} ${date[2]}`;
     }
 
     handleRequest(req, res) {
         this.requestCount++;
-
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', '*');
         if (req.method === "POST") {
             let body = "";
             req.on("data", chunk => {
@@ -113,11 +110,15 @@ class DictionaryServer {
         if (word && def) {
             const didAdd = this.addDefinition(word, def);
             if (didAdd){
+                const message = messages.messages.NewEntry
+                    .replace("%1", this.requestCount)
+                    .replace("%2", this.lastUpdated)
+                    .replace("%3", `${word} : ${def}`)
+                    .replace("%4", this.dictionary.length);
+
                 serverRes = JSON.stringify({
-                    "message": messages.messages.NewEntry + `${word} : ${def}`,
+                    "message": message, 
                     "requestNumber": this.requestCount,
-                    "updatedOn": this.lastUpdated,
-                    "totalNumberOfWords": this.dictionary.length
                 });
                 res.writeHead(200);
             } else {
@@ -140,7 +141,30 @@ class DictionaryServer {
 
     startServer() {
         http.createServer((req, res) => {
-            this.handleRequest(req, res);
+            
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+            if(req.method === "OPTIONS"){
+                res.writeHead(204);
+                res.end();
+            }
+
+            const path = url.parse(req.url).pathname;
+            if(path === "/api/definitions" || path === "/api/definitions/"){
+
+                this.handleRequest(req, res);
+            } else {
+                const serverRes = JSON.stringify({
+                    "message": messages.messages.PageNotFound,
+                    "requestNumber": this.requestCount
+                });
+                res.writeHead(404);
+                res.write(serverRes);
+                res.end();
+            }
+
         }).listen(this.port, ()=>{
             console.log(`Server is running at port ${this.port}`);
         });
