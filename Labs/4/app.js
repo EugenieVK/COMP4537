@@ -43,7 +43,6 @@ class DictionaryServer {
     }
 
     handleRequest(req, res) {
-        this.requestCount++;
         if (req.method === "POST") {
             let body = "";
             req.on("data", chunk => {
@@ -153,9 +152,10 @@ class DictionaryServer {
 
             const path = url.parse(req.url).pathname;
             if(path === "/api/definitions" || path === "/api/definitions/"){
-
+                this.requestCount++;
                 this.handleRequest(req, res);
             } else {
+                this.requestCount++;
                 const serverRes = JSON.stringify({
                     "message": messages.messages.PageNotFound,
                     "requestNumber": this.requestCount
