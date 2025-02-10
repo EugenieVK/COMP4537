@@ -12,7 +12,7 @@ class DictionaryServer {
 
     addDefinition(word, def) {
         const check = this.dictionary.filter((def) => {
-            return Object.keys(def)[0] == word;
+            return Object.keys(def)[0] === word;
         });
 
         if (check.length > 0) {
@@ -27,7 +27,7 @@ class DictionaryServer {
 
     getDefinition(word) {
         const foundWords = this.dictionary.filter((def) => {
-            return Object.keys(def)[0] == word;
+            return Object.keys(def)[0] === word;
         });
 
         if (foundWords.length > 0) {
@@ -39,7 +39,8 @@ class DictionaryServer {
 
     getDate() {
         const date = new Date().toDateString().split(" ");
-        return `${date[1]} ${date[2]}`;
+        date.shift()
+        return date.join(" ");
     }
 
     handleRequest(req, res) {
@@ -49,7 +50,7 @@ class DictionaryServer {
                 body += chunk;
             });
 
-            req.on('end', () => {
+            req.on("end", () => {
                 this.handlePost(body, res)
                 
             res.end();
@@ -110,10 +111,9 @@ class DictionaryServer {
             const didAdd = this.addDefinition(word, def);
             if (didAdd){
                 const message = messages.messages.NewEntry
-                    .replace("%1", this.requestCount)
-                    .replace("%2", this.lastUpdated)
-                    .replace("%3", `${word} : ${def}`)
-                    .replace("%4", this.dictionary.length);
+                    .replace("%1", this.lastUpdated)
+                    .replace("%2", `${word} : ${def}`)
+                    .replace("%3", this.dictionary.length);
 
                 serverRes = JSON.stringify({
                     "message": message, 
