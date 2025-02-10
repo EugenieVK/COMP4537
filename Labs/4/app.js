@@ -112,7 +112,7 @@ class DictionaryServer {
             if (didAdd){
                 const message = messages.messages.NewEntry
                     .replace("%1", this.lastUpdated)
-                    .replace("%2", `\t"${word}" \n\t ${def}`)
+                    .replace("%2", `"${word}" - ${def}`)
                     .replace("%3", this.dictionary.length);
 
                 serverRes = JSON.stringify({
