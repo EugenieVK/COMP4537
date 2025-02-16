@@ -1,14 +1,14 @@
 const messages = require("./lang/en/en");
 
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const http = require("http");
 const url = require("url");
 
-const host = 'db-mysql-tor1-79943-do-user-18795543-0.d.db.ondigitalocean.com';
-const dbPort = 25060;
-const user = 'doadmin';
-const password = 'AVNS_G1N6RRfZaJJGDVZlKbW';
-const database = 'comp4537';
+const host = process.env.DB_HOST;
+const dbPort = process.env.DB_PORT;
+const user = process.env.DB_USER;
+const password = process.env.DB_PASSWORD;
+const database =  process.env.DB_DATABASE;
 
 const insertQuery = `INSERT INTO patients (name, dateOfBirth) VALUES %1 ;`;
 const insertValues = `('%1', '%2 00:00:00')`;
@@ -36,11 +36,13 @@ class Repository {
             user: this.user,
             port: this.port,
             password: this.password,
-            database: this.database
+            database: this.database,
+            sslmode: 'REQUIRED'
         });
 
         this.con.connect((err) => {
             if (err) {
+                console.log(err);
                 return false;
             }
             return true;
