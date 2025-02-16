@@ -4,15 +4,14 @@ const mysql = require('mysql');
 const http = require("http");
 const url = require("url");
 
-const host = 'localhost';
-const user = 'local_user';
-const password = 'password';
+const host = 'db-mysql-tor1-79943-do-user-18795543-0.d.db.ondigitalocean.com';
+const dbPort = 25060;
+const user = 'doadmin';
+const password = 'AVNS_G1N6RRfZaJJGDVZlKbW';
 const database = 'comp4537';
 
 const insertQuery = `INSERT INTO patients (name, dateOfBirth) VALUES %1 ;`;
 const insertValues = `('%1', '%2 00:00:00')`;
-
-
 
 /*
     Represents a repository for the database, handling all database 
@@ -21,8 +20,9 @@ const insertValues = `('%1', '%2 00:00:00')`;
 class Repository {
 
     // Establishes variables used to conncet to database
-    constructor(host, user, password, database) {
+    constructor(host, user, password, database, port) {
         this.host = host;
+        this.port = port;
         this.user = user;
         this.password = password;
         this.database = database;
@@ -34,6 +34,7 @@ class Repository {
         this.con = mysql.createConnection({
             host: this.host,
             user: this.user,
+            port: this.port,
             password: this.password,
             database: this.database
         });
@@ -91,9 +92,9 @@ class Repository {
 class Server {
 
     // Establishes port for server and creates a repository to use to edit the database
-    constructor(port, host, user, password, database) {
+    constructor(port, host, user, password, database, dbPort) {
         this.port = port;
-        this.repo = new Repository(host, user, password, database);
+        this.repo = new Repository(host, user, password, database, dbPort);
         this.repo.init();
     }
 
@@ -234,5 +235,5 @@ class Server {
     }
 }
 
-const server = new Server(8000, host, user, password, database);
+const server = new Server(8000, host, user, password, database, dbPort);
 server.startServer();
