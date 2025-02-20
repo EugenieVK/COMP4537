@@ -21,11 +21,11 @@ const insertValues = `('%1', '%2 00:00:00')`;
 
 // Create table if not exists
 const createTableQuery = `
-    CREATE TABLE IF NOT EXISTS users (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      email VARCHAR(255) UNIQUE NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    CREATE TABLE IF NOT EXISTS paients (
+      patientid INT NOT NULL AUTO_INCREMENT
+      name VARCHAR(100),
+      dateOfBirth datetime,
+      PRIMARY KEY(patientid)
     )
   `;
 
