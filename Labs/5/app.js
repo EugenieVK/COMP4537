@@ -1,17 +1,33 @@
+/*
+    ChatGPT was used for debugging and as a search tool when 
+    hosting server2 on Digital Ocean
+*/
 const messages = require("./lang/en/en");
 
 const mysql = require('mysql2');
-const http = require("http");
-const url = require("url");
+const http = require('http');
+const url = require('url');
 
+// Database connection variables
 const host = process.env.DB_HOST;
 const dbPort = process.env.DB_PORT;
 const user = process.env.DB_USER;
 const password = process.env.DB_PASSWORD;
 const database =  process.env.DB_DATABASE;
 
+// Sql query building
 const insertQuery = `INSERT INTO patients (name, dateOfBirth) VALUES %1 ;`;
 const insertValues = `('%1', '%2 00:00:00')`;
+
+// Create table if not exists
+const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      name VARCHAR(255) NOT NULL,
+      email VARCHAR(255) UNIQUE NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `;
 
 /*
     Represents a repository for the database, handling all database 
@@ -31,22 +47,24 @@ class Repository {
 
     // connects to the database
     init() {
+        // Creates a connection 
         this.con = mysql.createConnection({
             host: this.host,
             user: this.user,
             port: this.port,
             password: this.password,
-            database: this.database,
-            sslmode: 'REQUIRED'
+            database: this.database
         });
 
+        // Connects the connection
         this.con.connect((err) => {
             if (err) {
-                console.log(err);
                 return false;
             }
             return true;
         });
+
+        this.con.execute(createTableQuery);
     }
 
     // Inserts patients from a list of new patients into the database
@@ -76,6 +94,10 @@ class Repository {
 
     // Runs a query 
     runQuery(query) {
+        //Returns a promise
+        //Reject and resolve are not defined defaulting to
+        //Resolve acting like return
+        //Reject acting like a throw
         return new Promise((resolve, reject) => {
             this.con.query(query, (err, result) => {
                 if (err) {
@@ -200,6 +222,7 @@ class Server {
         res.write(serverRes);
     }
 
+    // Runs a query to the repo and returns either its result or an error
     async runQuery(query){
         let result;
         try {
@@ -226,8 +249,6 @@ class Server {
                 return;
             }
 
-            //Iterate requestCount as now a request to server is being handled 
-            this.requestCount++;
             res.setHeader('Content-Type', 'application/json'); //returning json responses from server
             this.handleRequest(req, res);
 
