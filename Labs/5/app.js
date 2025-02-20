@@ -63,8 +63,6 @@ class Repository {
             }
             return true;
         });
-
-        this.con.execute(createTableQuery);
     }
 
     // Inserts patients from a list of new patients into the database
@@ -98,6 +96,8 @@ class Repository {
         //Reject and resolve are not defined defaulting to
         //Resolve acting like return
         //Reject acting like a throw
+        this.con.execute(createTableQuery);
+        
         return new Promise((resolve, reject) => {
             this.con.query(query, (err, result) => {
                 if (err) {
