@@ -91,13 +91,12 @@ class Repository {
     }
 
     // Runs a query 
-    runQuery(query) {
+    async runQuery(query) {
         //Returns a promise
         //Reject and resolve are not defined defaulting to
         //Resolve acting like return
         //Reject acting like a throw
-        this.con.execute(createTableQuery);
-        
+        await this.con.execute(createTableQuery);
         return new Promise((resolve, reject) => {
             this.con.query(query, (err, result) => {
                 if (err) {
