@@ -59,6 +59,7 @@ class Repository {
         // Connects the connection
         this.con.connect((err) => {
             if (err) {
+                console.error("Database connection failed:", err);
                 return false;
             }
             return true;
